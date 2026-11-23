@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f2b48">
+  <meta name="description" content="AsistIA, asistente académico virtual de TEINCO">
+  <title>AsistIA | TEINCO</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- Header & Navigation -->
+  <header class="header">
+    <div class="headin">
+      <div class="brand" aria-label="TEINCO, Corporación Tecnológica Industrial Colombiana">
+        <div class="mark">
+          <img src="./images/asistia-logo.jpg" alt="" class="logo">
+        </div>
+        <div>
+          <strong>TEINCO <span style="color:#9cc9e8;font-weight:500">|</span> AsistIA</strong>
+          <small>Asistente Académico Virtual</small>
+        </div>
+      </div>
+
+      <nav class="nav" role="tablist" aria-label="Módulos de AsistIA">
+        <button class="tab" id="tab-chat" role="tab" aria-selected="true" aria-controls="view-chat" data-view="chat">Chatbot Estudiantil</button>
+        <button class="tab" id="tab-management" role="tab" aria-selected="false" aria-controls="view-management" data-view="management">Gestión por División (HU-04)</button>
+        <button class="tab" id="tab-audit" role="tab" aria-selected="false" aria-controls="view-audit" data-view="audit">Auditoría / Aprendizaje (HU-05)</button>
+      </nav>
+
+      <div class="online">
+        <i class="dot"></i>En línea 24/7
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="shell">
+
+    <!-- View: Chatbot Estudiantil -->
+    <section class="view active" id="view-chat" role="tabpanel" aria-labelledby="tab-chat">
+      <div class="intro">
+        <p class="eyebrow">Atención a la comunidad académica</p>
+        <h1>Hola, ¿en qué podemos orientarte?</h1>
+        <p>Escribe tu pregunta. Si hace falta una respuesta personalizada, AsistIA puede canalizarla con el equipo de la dependencia.</p>
+      </div>
+
+      <div class="bot-hero">
+        <div>
+          <h2>Tu campus, más cerca</h2>
+          <p>Pregunta por trámites, servicios y vida académica. AsistIA te orienta y te conecta con el área correspondiente.</p>
+        </div>
+        <svg class="bot-illustration" viewBox="0 0 120 120" role="img" aria-label="Robot AsistIA con birrete académico">
+          <circle cx="60" cy="60" r="54" fill="#ffffff15"/>
+          <path d="M60 15 92 29 60 43 28 29Z" fill="#54d88b"/>
+          <path d="M39 35v13c0 10 42 10 42 0V35L60 45Z" fill="#f4f9fc"/>
+          <path d="M81 35v15" stroke="#f4f9fc" stroke-width="3"/>
+          <circle cx="81" cy="53" r="4" fill="#54d88b"/>
+          <rect x="31" y="52" width="58" height="45" rx="16" fill="#f4f9fc"/>
+          <rect x="39" y="60" width="42" height="24" rx="9" fill="#dff3ff"/>
+          <circle cx="51" cy="71" r="3" fill="#2b6cb0"/>
+          <circle cx="69" cy="71" r="3" fill="#2b6cb0"/>
+          <path d="M52 79h16" stroke="#38a169" stroke-width="3" stroke-linecap="round"/>
+          <path d="M26 69h5M89 69h5" stroke="#54d88b" stroke-width="3" stroke-linecap="round"/>
+          <text x="60" y="111" text-anchor="middle" fill="#fff" font-size="9" font-family="Arial" font-weight="700">TEINCO · AsistIA</text>
+        </svg>
+      </div>
+
+      <div id="query-result" class="query-result hidden" role="status"></div>
+
+      <div class="layout">
+        <!-- Chat Section -->
+        <section class="chat" aria-label="Conversación con AsistIA">
+          <div class="chathead">
+            <div class="agent">
+              <div class="robot" aria-hidden="true">
+                <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="7" width="16" height="13" rx="4" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M12 4v3M8 12h.01M16 12h.01M9 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <circle cx="12" cy="4" r="1.5" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <strong>AsistIA</strong>
+                <small>Asistente académico virtual</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="messages" id="messages" aria-live="polite" aria-relevant="additions text"></div>
+
+          <form class="compose" id="chat-form">
+            <div class="composebox">
+              <input id="question-input" maxlength="2000" autocomplete="off" placeholder="Escribe tu pregunta aquí…" aria-label="Escribe tu pregunta" required>
+              <button class="send" id="send-button" type="submit">Enviar ➤</button>
+            </div>
+            <div class="micro">AsistIA puede equivocarse. Confirma la información importante con la dependencia responsable.</div>
+            <p class="notice" id="chat-notice" role="status"></p>
+          </form>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <section class="side">
+            <h2>Temas de consulta</h2>
+            <p>Elige un tema para iniciar tu pregunta.</p>
+            <div class="topics">
+              <button class="topic" data-prompt="Quiero información sobre admisiones e inscripciones"><i>✦</i>Admisiones e inscripciones</button>
+              <button class="topic" data-prompt="¿Cómo solicito un certificado académico?"><i>▤</i>Certificados y registro</button>
+              <button class="topic" data-prompt="Quiero conocer los servicios de bienestar"><i>♡</i>Bienestar institucional</button>
+              <button class="topic" data-prompt="Necesito consultar información sobre horarios de clase"><i>◷</i>Horarios y clases</button>
+            </div>
+          </section>
+
+          <section class="onlinebox">
+            <strong><i class="dot" style="display:inline-block;vertical-align:middle;margin-right:5px"></i>Atención disponible</strong>
+            <small>El canal de consulta está listo para tus preguntas.</small>
+          </section>
+
+          <section class="side">
+            <p>Si tu caso requiere revisión personal, puedes solicitar que una persona autorizada de la división te responda.</p>
+          </section>
+        </aside>
+      </div>
+
+      <div id="case-banner" class="callout hidden" role="status"></div>
+    </section>
+
+    <!-- View: Gestión por División (HU-04) -->
+    <section class="view" id="view-management" role="tabpanel" aria-labelledby="tab-management" hidden>
+      <div class="intro">
+        <p class="eyebrow">HU-04 · Atención humana</p>
+        <h1>Gestión por División</h1>
+        <p>Consulta las preguntas asignadas y registra una respuesta oficial para dar continuidad a cada caso.</p>
+      </div>
+
+      <!-- Login Form -->
+      <div id="management-login" class="loginwrap">
+        <form class="login" id="login-form">
+          <h2>Ingreso del equipo TEINCO</h2>
+          <p>Acceso para funcionarios autorizados de cada dependencia.</p>
+          <div class="field">
+            <label for="login-email">Correo institucional</label>
+            <input id="login-email" type="email" autocomplete="username" placeholder="nombre@teinco.edu.co" required>
+          </div>
+          <div class="field">
+            <label for="login-password">Contraseña</label>
+            <input id="login-password" type="password" autocomplete="current-password" required>
+          </div>
+          <button class="primary" type="submit">Ingresar al panel</button>
+          <div class="help" id="login-help">Modo local: admin@asistia.example.com · AsistIA-demo-2026</div>
+          <p class="notice" id="login-notice" role="status"></p>
+        </form>
+      </div>
+
+      <!-- Staff Management Panel -->
+      <div id="management-panel" class="panel hidden">
+        <div class="bar">
+          <div>
+            <h2>Bandeja de consultas</h2>
+            <p id="staff-caption">Casos recibidos por la dependencia asignada.</p>
+          </div>
+          <button id="logout-btn" class="secondary" type="button">Cerrar sesión</button>
+        </div>
+
+        <div class="bar">
+          <div class="filters">
+            <button class="filter active" data-case-status="HUMAN_REQUIRED" type="button">Pendientes</button>
+            <button class="filter" data-case-status="HUMAN_ANSWERED" type="button">Respondidas</button>
+          </div>
+          <button class="secondary" id="refresh-cases" type="button">↻ Actualizar</button>
+        </div>
+
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Caso</th>
+                <th>Consulta</th>
+                <th>Dependencia</th>
+                <th>Contacto</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="cases-tbody"></tbody>
+          </table>
+        </div>
+
+        <div id="cases-empty" class="empty hidden">No hay casos en este estado.</div>
+
+        <div class="replygrid">
+          <div class="sub">
+            <h3>Consulta seleccionada</h3>
+            <div id="selected-case" class="placeholder">Selecciona un caso para ver sus detalles.</div>
+          </div>
+
+          <form class="sub" id="reply-form">
+            <h3>Redactar respuesta</h3>
+            <p class="micro">La respuesta queda asociada a la cuenta que inició sesión.</p>
+            <textarea class="textarea" id="reply-text" maxlength="5000" placeholder="Escribe la respuesta de tu dependencia…" required disabled></textarea>
+            <button class="primary" id="reply-submit" type="submit" style="margin-top:9px" disabled>Guardar y responder</button>
+            <p class="notice" id="reply-notice" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- View: Auditoría / Aprendizaje (HU-05) -->
+    <section class="view" id="view-audit" role="tabpanel" aria-labelledby="tab-audit" hidden>
+      <div class="intro">
+        <p class="eyebrow">HU-05 · Calidad y aprendizaje</p>
+        <h1>Auditoría y Aprendizaje</h1>
+        <p>Revisa las respuestas del asistente y del personal. Aprueba las adecuadas o registra una corrección para el conocimiento institucional.</p>
+      </div>
+
+      <div id="audit-login-hint" class="panel">
+        <strong>Inicia sesión como líder de división o superadministrador</strong>
+        <p class="micro">Usa la pestaña Gestión por División. El acceso depende del rol asignado.</p>
+      </div>
+
+      <div id="audit-panel" class="panel hidden">
+        <div class="bar">
+          <div>
+            <h2>Panel de calidad</h2>
+            <p>Indicadores calculados con los registros disponibles.</p>
+          </div>
+          <button class="secondary" id="refresh-audit" type="button">↻ Actualizar</button>
+        </div>
+
+        <div class="dashboard" id="metrics-grid"></div>
+
+        <section class="sub knowledge-editor">
+          <h3>Agregar información oficial</h3>
+          <p class="micro">Registra una pregunta y su respuesta confirmada en una fuente institucional. El conocimiento se activa al guardarlo.</p>
+          <form id="knowledge-form">
+            <div class="field">
+              <label for="knowledge-question">Pregunta y palabras clave</label>
+              <textarea id="knowledge-question" maxlength="2000" placeholder="Ej.: ¿Cómo solicito un certificado académico? certificado, constancia, notas" required></textarea>
+            </div>
+            <div class="field">
+              <label for="knowledge-answer">Respuesta oficial</label>
+              <textarea id="knowledge-answer" maxlength="10000" placeholder="Escribe los pasos y requisitos tal como aparecen en la fuente." required></textarea>
+            </div>
+            <div class="field">
+              <label for="knowledge-source">Fuente oficial</label>
+              <input id="knowledge-source" maxlength="240" placeholder="Ej.: Reglamento estudiantil, sección 4, página 12" required>
+            </div>
+            <div class="field">
+              <label for="knowledge-department">Alcance</label>
+              <select id="knowledge-department" required></select>
+            </div>
+            <button class="primary" id="knowledge-submit" type="submit">Guardar respuesta aprobada</button>
+            <button class="secondary hidden" id="knowledge-cancel" type="button">Cancelar edición</button>
+            <p class="notice" id="knowledge-notice" role="status"></p>
+          </form>
+        </section>
+
+        <div class="bar" style="margin-top:23px">
+          <div>
+            <h2>Conocimiento disponible</h2>
+            <p>Edita o desactiva respuestas obsoletas; solo los artículos activos pueden responder consultas.</p>
+          </div>
+        </div>
+        <div id="knowledge-list"></div>
+
+        <div class="two">
+          <section class="sub">
+            <h3>Consultas por dependencia</h3>
+            <div class="scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Dependencia</th>
+                    <th>Consultas</th>
+                  </tr>
+                </thead>
+                <tbody id="department-metrics"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="sub">
+            <h3>Temas frecuentes</h3>
+            <div class="scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tema</th>
+                    <th>Consultas</th>
+                  </tr>
+                </thead>
+                <tbody id="topic-metrics"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="bar" style="margin-top:23px">
+          <div>
+            <h2>Respuestas para revisión</h2>
+            <p>La aprobación incorpora la respuesta al conocimiento del sistema.</p>
+          </div>
+        </div>
+
+        <div id="reviews-list"></div>
+        <p id="audit-notice" class="notice" role="status"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <strong>TEINCO · AsistIA</strong> · Asistente Académico Virtual · Prototipo para pruebas
+  </footer>
+
+  <!-- Contact Modal -->
+  <div class="modalbg hidden" id="contact-modal">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+      <button class="close" id="modal-close" type="button" aria-label="Cerrar">×</button>
+      <div class="modalicon">✉</div>
+      <p class="eyebrow">Seguimiento de tu consulta</p>
+      <h2 id="modal-title">¿Quieres que una persona te responda?</h2>
+      <p id="modal-description">La consulta se enviará a la dependencia correspondiente. Comparte tus datos si deseas seguimiento.</p>
+      <div id="modal-routing" class="query-result"></div>
+
+      <form id="contact-form">
+        <div class="field">
+          <label for="contact-name">Nombre</label>
+          <input id="contact-name" autocomplete="name" maxlength="140" required>
+        </div>
+        <div class="field">
+          <label for="contact-method">Correo electrónico o teléfono / WhatsApp</label>
+          <input id="contact-method" type="text" autocomplete="email" maxlength="180" placeholder="Correo o número de teléfono" required>
+        </div>
+        <label class="consent">
+          <input id="contact-consent" type="checkbox" required>
+          <span>Autorizo el uso de estos datos para dar seguimiento a esta consulta.</span>
+        </label>
+        <div class="modalfoot">
+          <button class="secondary" id="contact-cancel" type="button">Ahora no</button>
+          <button class="primary" type="submit">Enviar a la dependencia</button>
+        </div>
+        <div class="micro">En este prototipo se registra el teléfono; la notificación se envía por correo cuando SMTP está configurado.</div>
+        <p class="notice" id="contact-notice" role="status"></p>
+      </form>
+    </section>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

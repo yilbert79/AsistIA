@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: asistia_teinco_db
+      MYSQL_USER: asistia_dev
+      MYSQL_PASSWORD: asistia_dev_password
+      MYSQL_ROOT_PASSWORD: root_dev_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - asistia_mysql_data:/var/lib/mysql
+volumes:
+  asistia_mysql_data:
